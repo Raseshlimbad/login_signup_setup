@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 
 interface User {
+  id: string;
   email: string;
   username: string;
   isAdmin: boolean;

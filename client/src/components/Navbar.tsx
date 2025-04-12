@@ -4,6 +4,8 @@ import { logout } from '@/store/authSlice';
 import { toast } from 'sonner';
 import { useCurrentUser } from '@/hooks/useCurrentUser';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 
 const NAV_ITEMS = [
   { label: 'Home', href: '/' },
@@ -14,6 +16,7 @@ const NAV_ITEMS = [
 export default function Navbar() {
   const user = useCurrentUser();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const handleLogout = async () => {
     try {
@@ -24,6 +27,7 @@ export default function Navbar() {
         body: JSON.stringify({ query: 'mutation { logout }' })
       });
       dispatch(logout());
+      router.push('/auth');
       toast.success('Logged out successfully! 👋');
     } catch (error) {
       console.log("Error logging out: ", error);

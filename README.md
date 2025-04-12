@@ -13,6 +13,7 @@ A modern authentication system built with React, Node.js, GraphQL, and TypeScrip
 - 🍪 HTTP-only cookie session management
 - ⚡ TypeScript support
 - 🛡️ Password encryption with bcrypt
+- Real-time Status Updates
 
 ## Tech Stack
 
@@ -22,6 +23,7 @@ A modern authentication system built with React, Node.js, GraphQL, and TypeScrip
 - TypeScript
 - Redux Toolkit
 - Tailwind CSS
+- Socket.IO Client
 - Sonner (Toast notifications)
 - GraphQL Client
 
@@ -32,6 +34,7 @@ A modern authentication system built with React, Node.js, GraphQL, and TypeScrip
 - GraphQL (Apollo Server)
 - PostgreSQL
 - Prisma ORM
+- Socket.IO
 - JWT Authentication
 - bcrypt for password hashing
 
@@ -140,21 +143,72 @@ The project is structured as follows:
 
 ```plaintext
 login_signup/
+login_signup/
 ├── client/                 # Frontend application
 │   ├── src/
-│   │   ├── components/    # React components
+│   │   ├── app/          # Next.js app directory
+│   │   │   ├── auth/     # Authentication pages
+│   │   │   ├── projects/ # Project pages
+│   │   │   └── tasks/    # Task pages
+│   │   ├── components/   # React components
+│   │   │   ├── auth/     # Auth-related components
+│   │   │   ├── chat/     # Chat components
+│   │   │   └── shared/   # Shared components
 │   │   ├── hooks/        # Custom hooks
+│   │   │   ├── useSocket.ts    # Socket hook
+│   │   │   └── useCurrentUser.ts # User hook
 │   │   ├── store/        # Redux store
+│   │   │   ├── authSlice.ts    # Auth state
+│   │   │   └── chatSlice.ts    # Chat state
 │   │   └── types/        # TypeScript types
+│   │       ├── auth.types.ts    # Auth types
+│   │       └── socket.types.ts  # Socket types
 │   └── public/           # Static files
-└── server/                # Backend application
+└── server/               # Backend application
     ├── src/
-    │   ├── config/       # Configuration files
-    │   ├── graphql/      # GraphQL schemas and resolvers
-    │   ├── services/     # Business logic
-    │   └── types/        # TypeScript types
-    └── prisma/           # Database schema and migrations
+    │   ├── config/      # Configuration files
+    │   ├── graphql/     # GraphQL schemas and resolvers
+    │   │   ├── resolvers/
+    │   │   └── typeDefs/
+    │   ├── services/    # Business logic
+    │   │   ├── auth.service.ts
+    │   │   └── user.service.ts
+    │   ├── socket/      # Socket.IO handlers
+    │   │   ├── socketHandler.ts
+    │   │   └── events/
+    │   ├── middleware/  # Custom middleware
+    │   │   ├── auth.middleware.ts
+    │   │   └── error.middleware.ts
+    │   └── types/      # TypeScript types
+    │       ├── auth.types.ts
+    │       └── socket.types.ts
+    └── prisma/         # Database schema and migrations
+        ├── migrations/
+        └── schema.prisma
 ```
+
+## Socket.IO Features
+- Real-time user status (online/offline)
+- Private messaging rooms
+- Room management
+- Typing indicators
+- Message delivery status
+- Auto-reconnection
+- Room cleanup on disconnect
+## API Structure
+### GraphQL Endpoints
+- Authentication (login, signup, logout)
+- User management
+- Project operations
+- Task management
+### Socket Events
+- join_room : Join a private room
+- leave_room : Leave a room
+- message : Send messages
+- user_online : User online status
+- user_offline : User offline status
+- typing_start : User started typing
+- typing_end : User stopped typing
 
 ## Contributing
 
